@@ -17,6 +17,7 @@ public interface ClientMapper {
     @Mapping(target = "birthDate", source = "birthDate", dateFormat = "dd/MM/yyyy")
     Client toModel(ClientDTO clientDTO);
 
+    @Mapping(target = "birthDate", source = "birthDate", dateFormat = "dd/MM/yyyy")
     ClientDTO toDTO(Client client);
 
 }

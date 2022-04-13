@@ -37,6 +37,11 @@ public class  ClientController {
         return clientService.createClient(clientDTO);
     }
 
+    @PutMapping
+    public MessageResponseDTO updateClient(@RequestBody @Valid ClientDTO clientDTO) {
+        return clientService.updateClient(clientDTO);
+    }
+
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
