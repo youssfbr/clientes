@@ -48,19 +48,22 @@ public class ClientService implements IClientService {
     @Transactional
     public MessageResponseDTO createClient(ClientDTO clientDTO) {
 
-        Client client = clientMapper.toModel(clientDTO);
-        client = clientRepository.save(client);
+        Client clientToSave = clientMapper.toModel(clientDTO);
+        Client clientSaved = clientRepository.save(clientToSave);
 
-        return MessageResponseDTO
-                .builder()
-                .message("Client created with ID " + client.getId())
-                .build();
+        return createMessageResponse(clientSaved.getId(), "Client created with ID ");
     }
 
     @Override
     @Transactional
-    public MessageResponseDTO update(Client client) {
-        return null;
+    public MessageResponseDTO updateClient(ClientDTO clientDTO) {
+
+        verifyIfExists(clientDTO.getId());
+
+        Client clientToUpdate = clientMapper.toModel(clientDTO);
+        Client clientUpdated = clientRepository.save(clientToUpdate);
+
+        return createMessageResponse(clientUpdated.getId(), "Client updated with ID ");
     }
 
     @Override
@@ -77,5 +80,11 @@ public class ClientService implements IClientService {
                 .orElseThrow(() -> new ClientNotFoundException(id));
     }
 
+    private MessageResponseDTO createMessageResponse(Long id, String message) {
+        return MessageResponseDTO
+                .builder()
+                .message(message + id)
+                .build();
+    }
 
 }
