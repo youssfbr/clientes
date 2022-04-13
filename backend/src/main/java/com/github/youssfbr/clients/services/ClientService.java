@@ -49,9 +49,9 @@ public class ClientService implements IClientService {
     public MessageResponseDTO createClient(ClientDTO clientDTO) {
 
         Client clientToSave = clientMapper.toModel(clientDTO);
-        Client clientSaved = clientRepository.save(clientToSave);
+        Client savedClient = clientRepository.save(clientToSave);
 
-        return createMessageResponse(clientSaved.getId(), "Client created with ID ");
+        return createMessageResponse(savedClient.getId(), "Created client with ID ");
     }
 
     @Override
@@ -61,9 +61,9 @@ public class ClientService implements IClientService {
         verifyIfExists(clientDTO.getId());
 
         Client clientToUpdate = clientMapper.toModel(clientDTO);
-        Client clientUpdated = clientRepository.save(clientToUpdate);
+        Client updatedClient = clientRepository.save(clientToUpdate);
 
-        return createMessageResponse(clientUpdated.getId(), "Client updated with ID ");
+        return createMessageResponse(updatedClient.getId(), "Updated client with ID ");
     }
 
     @Override
