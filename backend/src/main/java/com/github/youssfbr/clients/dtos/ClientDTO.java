@@ -1,7 +1,5 @@
 package com.github.youssfbr.clients.dtos;
 
-import com.github.youssfbr.clients.entities.Phone;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -54,6 +52,6 @@ public class ClientDTO implements Serializable {
 
     private String note;
 
-    private List<Phone> phones;
+    private List<PhoneDTO> phones;
 
 }
