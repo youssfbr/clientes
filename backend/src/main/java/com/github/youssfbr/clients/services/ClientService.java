@@ -6,6 +6,7 @@ import com.github.youssfbr.clients.entities.Client;
 import com.github.youssfbr.clients.mapper.ClientMapper;
 import com.github.youssfbr.clients.repositories.IClientRepository;
 import com.github.youssfbr.clients.services.exceptions.ClientNotFoundException;
+import com.github.youssfbr.clients.services.exceptions.InternalServerErrorException;
 import com.github.youssfbr.clients.services.interfaces.IClientService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,51 +28,80 @@ public class ClientService implements IClientService {
     @Override
     @Transactional(readOnly = true)
     public List<ClientDTO> listAll() {
+        try {
+            List<Client> allClients = clientRepository.findAll();
 
-        List<Client> allClients = clientRepository.findAll();
-
-        return allClients.stream()
-                .map(clientMapper::toDTO)
-                .collect(Collectors.toList());
+            return allClients.stream()
+                    .map(clientMapper::toDTO)
+                    .collect(Collectors.toList());
+        }
+        catch (Exception e) {
+            throw new InternalServerErrorException();
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id) {
-        return clientRepository
-                .findById(id)
-                .map(clientMapper::toDTO)
-                .orElseThrow(() -> new ClientNotFoundException(id));
+        try {
+            return clientRepository
+                    .findById(id)
+                    .map(clientMapper::toDTO)
+                    .orElseThrow(() -> new ClientNotFoundException(id));
+        }
+        catch (ClientNotFoundException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new InternalServerErrorException();
+        }
     }
 
     @Override
     @Transactional
     public MessageResponseDTO createClient(ClientDTO clientDTO) {
+        try {
+            Client clientToSave = clientMapper.toModel(clientDTO);
+            Client savedClient = clientRepository.save(clientToSave);
 
-        Client clientToSave = clientMapper.toModel(clientDTO);
-        Client savedClient = clientRepository.save(clientToSave);
-
-        return createMessageResponse(savedClient.getId(), "Created client with ID ");
+            return createMessageResponse(savedClient.getId(), "Created client with ID ");
+        }
+        catch (Exception e) {
+            throw new InternalServerErrorException();
+        }
     }
 
     @Override
     @Transactional
     public MessageResponseDTO updateClient(ClientDTO clientDTO) {
+        try {
+            verifyIfExists(clientDTO.getId());
 
-        verifyIfExists(clientDTO.getId());
+            Client clientToUpdate = clientMapper.toModel(clientDTO);
+            Client updatedClient = clientRepository.save(clientToUpdate);
 
-        Client clientToUpdate = clientMapper.toModel(clientDTO);
-        Client updatedClient = clientRepository.save(clientToUpdate);
-
-        return createMessageResponse(updatedClient.getId(), "Updated client with ID ");
+            return createMessageResponse(updatedClient.getId(), "Updated client with ID ");
+        }
+        catch (ClientNotFoundException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new InternalServerErrorException();
+        }
     }
 
     @Override
     public void delete(Long id) {
-
-        verifyIfExists(id);
-
-        clientRepository.deleteById(id);
+        try {
+            verifyIfExists(id);
+            clientRepository.deleteById(id);
+        }
+        catch (ClientNotFoundException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new InternalServerErrorException();
+        }
     }
 
     private Client verifyIfExists(Long id) {

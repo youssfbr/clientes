@@ -4,7 +4,6 @@ import com.github.youssfbr.clients.dtos.ClientDTO;
 import com.github.youssfbr.clients.entities.Client;
 
 import org.mapstruct.Mapper;
-
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
