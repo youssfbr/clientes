@@ -29,9 +29,9 @@ public class ClientService implements IClientService {
     @Transactional(readOnly = true)
     public List<ClientDTO> listAll() {
         try {
-            List<Client> allClients = clientRepository.findAll();
-
-            return allClients.stream()
+            return clientRepository
+                    .findAll()
+                    .stream()
                     .map(clientMapper::toDTO)
                     .collect(Collectors.toList());
         }
