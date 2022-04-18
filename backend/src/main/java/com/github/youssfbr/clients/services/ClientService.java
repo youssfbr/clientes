@@ -11,6 +11,8 @@ import com.github.youssfbr.clients.services.interfaces.IClientService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +22,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = "client")
 public class ClientService implements IClientService {
 
     private final IClientRepository clientRepository;
     private static final ClientMapper clientMapper = ClientMapper.INSTANCE;
 
     @Override
+    @CachePut(unless = "#result.size()<3")
     @Transactional(readOnly = true)
     public List<ClientDTO> listAll() {
         try {
@@ -41,6 +45,7 @@ public class ClientService implements IClientService {
     }
 
     @Override
+    @CachePut(key = "#id")
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id) {
         try {
