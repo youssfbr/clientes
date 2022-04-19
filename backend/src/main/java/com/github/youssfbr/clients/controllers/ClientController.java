@@ -26,7 +26,6 @@ public class ClientController {
     public Response<List<ClientDTO>> listAll() {
 
         Response<List<ClientDTO>> response = new Response<>();
-        response.setStatusCode(HttpStatus.OK.value());
         response.setData(clientService.listAll());
 
         return response;
@@ -36,7 +35,6 @@ public class ClientController {
     public Response<ClientDTO> findById(@PathVariable Long id) {
 
         Response<ClientDTO> response = new Response<>();
-        response.setStatusCode(HttpStatus.OK.value());
         response.setData(clientService.findById(id));
 
         return response;
@@ -44,13 +42,22 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponseDTO createClient(@RequestBody @Valid ClientDTO clientDTO) {
-        return clientService.createClient(clientDTO);
+    public Response<MessageResponseDTO> createClient(@RequestBody @Valid ClientDTO clientDTO) {
+
+        Response<MessageResponseDTO> response = new Response<>();
+        response.setStatusCode(HttpStatus.CREATED.value());
+        response.setData(clientService.createClient(clientDTO));
+
+        return response;
     }
 
     @PutMapping
-    public MessageResponseDTO updateClient(@RequestBody @Valid ClientDTO clientDTO) {
-        return clientService.updateClient(clientDTO);
+    public Response<MessageResponseDTO> updateClient(@RequestBody @Valid ClientDTO clientDTO) {
+
+        Response<MessageResponseDTO> response = new Response<>();
+        response.setData(clientService.updateClient(clientDTO));
+
+        return response;
     }
 
     @DeleteMapping("{id}")
