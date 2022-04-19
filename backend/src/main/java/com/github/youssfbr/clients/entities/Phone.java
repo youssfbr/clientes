@@ -1,21 +1,20 @@
 package com.github.youssfbr.clients.entities;
 
 import com.github.youssfbr.clients.entities.enums.PhoneType;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
+import java.util.Objects;
 
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_phone")
 public class Phone implements Serializable {
@@ -32,4 +31,17 @@ public class Phone implements Serializable {
     @Column(nullable = false, length = 20)
     private String number;
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Phone phone = (Phone) o;
+        return id != null && Objects.equals(id, phone.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
