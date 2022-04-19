@@ -1,9 +1,6 @@
 package com.github.youssfbr.clients.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -16,6 +13,7 @@ import java.util.List;
 
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

@@ -2,6 +2,7 @@ package com.github.youssfbr.clients.controllers;
 
 import com.github.youssfbr.clients.dtos.ClientDTO;
 import com.github.youssfbr.clients.dtos.MessageResponseDTO;
+import com.github.youssfbr.clients.model.Response;
 import com.github.youssfbr.clients.services.interfaces.IClientService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,18 +18,28 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/clients")
-public class  ClientController {
+public class ClientController {
 
     private final IClientService clientService;
 
     @GetMapping
-    public List<ClientDTO> listAll() {
-        return clientService.listAll();
+    public Response<List<ClientDTO>> listAll() {
+
+        Response<List<ClientDTO>> response = new Response<>();
+        response.setStatusCode(HttpStatus.OK.value());
+        response.setData(clientService.listAll());
+
+        return response;
     }
 
     @GetMapping("{id}")
-    public ClientDTO findById(@PathVariable Long id) {
-        return clientService.findById(id);
+    public Response<ClientDTO> findById(@PathVariable Long id) {
+
+        Response<ClientDTO> response = new Response<>();
+        response.setStatusCode(HttpStatus.OK.value());
+        response.setData(clientService.findById(id));
+
+        return response;
     }
 
     @PostMapping
