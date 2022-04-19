@@ -70,4 +70,13 @@ public class ClientDTO implements Serializable {
         }
     }
 
+    private void setBirthDate(String birthDate) {
+        if(birthDate != null && birthDate.length() == 0) {
+            this.birthDate = null;
+        }
+        else {
+            this.birthDate = birthDate;
+        }
+    }
+
 }
