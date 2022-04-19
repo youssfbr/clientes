@@ -1,4 +1,4 @@
-package com.github.youssfbr.clients.model;
+package com.github.youssfbr.clients.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

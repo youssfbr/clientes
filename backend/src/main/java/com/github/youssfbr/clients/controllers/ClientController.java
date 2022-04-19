@@ -2,7 +2,7 @@ package com.github.youssfbr.clients.controllers;
 
 import com.github.youssfbr.clients.dtos.ClientDTO;
 import com.github.youssfbr.clients.dtos.MessageResponseDTO;
-import com.github.youssfbr.clients.model.Response;
+import com.github.youssfbr.clients.models.Response;
 import com.github.youssfbr.clients.services.interfaces.IClientService;
 
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.github.youssfbr.clients.controllers.exceptions;
 
-import com.github.youssfbr.clients.model.Response;
+import com.github.youssfbr.clients.models.Response;
 import com.github.youssfbr.clients.services.exceptions.ClientNotFoundException;
 import com.github.youssfbr.clients.services.exceptions.InternalServerErrorException;
 
