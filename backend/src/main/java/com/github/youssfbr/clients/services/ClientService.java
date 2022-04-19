@@ -5,8 +5,7 @@ import com.github.youssfbr.clients.dtos.MessageResponseDTO;
 import com.github.youssfbr.clients.entities.Client;
 import com.github.youssfbr.clients.mapper.ClientMapper;
 import com.github.youssfbr.clients.repositories.IClientRepository;
-import com.github.youssfbr.clients.services.exceptions.ClientNotFoundException;
-import com.github.youssfbr.clients.services.exceptions.InternalServerErrorException;
+import com.github.youssfbr.clients.services.exceptions.*;
 import com.github.youssfbr.clients.services.interfaces.IClientService;
 
 import lombok.RequiredArgsConstructor;
@@ -66,10 +65,25 @@ public class ClientService implements IClientService {
     @Transactional
     public MessageResponseDTO createClient(ClientDTO clientDTO) {
         try {
+
+            if (clientDTO.getId() != null) throw new ClientIdNotNullException();
+            checkCPF(clientDTO.getCpf());
+            checkEmail(clientDTO.getEmail1());
+
             Client clientToSave = clientMapper.toModel(clientDTO);
             Client savedClient = clientRepository.save(clientToSave);
 
             return createMessageResponse(savedClient.getId(), "Created client with ID ");
+
+        }
+        catch (ClientIdNotNullException e) {
+            throw e;
+        }
+        catch (CpfExistsException e) {
+            throw e;
+        }
+        catch (EmailExistsException e) {
+            throw e;
         }
         catch (Exception e) {
             throw new InternalServerErrorException();
@@ -120,6 +134,22 @@ public class ClientService implements IClientService {
                 .builder()
                 .message(message + id)
                 .build();
+    }
+
+    private void checkCPF(String cpf) {
+
+        boolean cpfNull = cpf == null;
+        boolean cpfExists = clientRepository.existsByCpf(cpf);
+
+        if ( cpfNull == false && cpfExists)  throw new CpfExistsException();
+    }
+
+    private void checkEmail(String email) {
+
+        boolean emailNull = email == null;
+        boolean emailExists = clientRepository.existsByEmail1(email);
+
+        if ( emailNull == false && emailExists)  throw new EmailExistsException();
     }
 
 }

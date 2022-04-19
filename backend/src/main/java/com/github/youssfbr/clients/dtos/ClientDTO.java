@@ -22,16 +22,15 @@ public class ClientDTO implements Serializable {
 
     private Long id;
 
-    @NotBlank(message = "{firstName.required}")
-    @Size(min = 2, max = 20, message = "{firstName.size}")
+    @NotBlank(message = "O nome é obrigatório.")
+    @Size(min = 2, max = 20, message = "O nome deve ter entre 2 a 20 caracteres.")
     private String firstName;
 
-    @NotBlank(message = "{lastName.required}")
-    @Size(min = 2, max = 20, message = "{lastName.size}")
+    @NotBlank(message = "O sobrenome é obrigatório.")
+    @Size(min = 2, max = 20, message = "O sobrenome deve ter entre 2 a 20 caracteres.")
     private String lastName;
 
-    @CPF(message = "{cpf.invalid}")
-    @Size(max = 14, message = "{cpf.size}")
+    @CPF(message = "O CPF está incorreto.")
     private String cpf;
 
     private String birthDate;
@@ -51,5 +50,24 @@ public class ClientDTO implements Serializable {
     private String note;
 
     private List<PhoneDTO> phones;
+
+
+    private void setCpf(String cpf) {
+        if(cpf != null && cpf.length() == 0) {
+            this.cpf = null;
+        }
+        else {
+            this.cpf = cpf;
+        }
+    }
+
+    private void setEmail1(String email1) {
+        if(email1 != null && email1.length() == 0) {
+            this.email1 = null;
+        }
+        else {
+            this.email1 = email1;
+        }
+    }
 
 }
